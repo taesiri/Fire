@@ -26,7 +26,63 @@ npm run build
 
 WebGPU requires a secure context. Vite's `127.0.0.1` or `localhost` URL qualifies; opening `index.html` directly with `file://` does not. If WebGPU is unavailable, the lab falls back to the WebGL2 preview.
 
-## Deterministic command-line recording
+## Offline rendering
+
+Fire Replica Lab includes a deterministic offline renderer for producing smooth,
+frame-complete MP4 video without depending on browser display speed. It advances
+the simulation by exactly one fixed step for every output frame, so a job may
+render much slower than realtime while the finished movie still contains a
+verified 60 fps cadence with no dropped frames.
+
+On Windows, start with a short HD validation render:
+
+```powershell
+.\scripts\record-fire.cmd --duration 30s --resolution hd --solver-tier hd --grid auto --scene inferno --field beauty --background --verify full --output renders/firex-inferno-hd60-30s.mp4
+```
+
+The practical 4K preset keeps the UHD solver grid while raising the presentation
+resolution:
+
+```powershell
+.\scripts\record-fire.cmd --duration 30s --resolution 4k --solver-tier uhd --grid auto --scene inferno --field beauty --background --verify full --output renders/firex-inferno-4k60-30s.mp4
+```
+
+The maximum-compute Reference render is intentionally expensive and requires an
+explicit heavy-job confirmation:
+
+```powershell
+.\scripts\record-fire.cmd --quality highest --duration 30s --scene inferno --field beauty --warmup 3s --confirm-heavy --background --verify full --output renders/firex-inferno-reference-4k60-30s.mp4
+```
+
+| Offline setup | Output | Dense solver grid | Intended use |
+|---|---:|---:|---|
+| `--resolution hd --solver-tier hd --grid auto` | 1920×1080, 60 fps | 128×192×128 | Fast validation and field checks |
+| `--resolution qhd --solver-tier qhd --grid auto` | 2560×1440, 60 fps | 160×240×160 | Balanced final render |
+| `--resolution 4k --solver-tier uhd --grid auto` | 3840×2160, 60 fps | 192×288×192 | Practical 4K render |
+| `--quality highest` | 3840×2160, 60 fps | Reference 508³ | Maximum-compute research render |
+
+Reference 508³ contains 131.1 million cells and runs 96 primary plus 96
+residual pressure iterations per output frame. On the development system, a
+short optimized run sustained about 0.21 output frames per wall-clock second;
+a 30-second movie therefore takes hours, and a one-hour movie can take many
+days. A mature plume or competing GPU workload can increase that time. The
+renderer reports measured solver and presentation timings while running—use
+those measurements, rather than the movie's 60 fps playback rate, to estimate a
+long job. Run `--dry-run` first and close other GPU-heavy browser tabs before a
+Reference capture because WebGPU uses one adapter and cannot pool VRAM across
+multiple GPUs.
+
+Every successful job writes the MP4 plus a neighboring `.mp4.json` manifest
+containing the exact scene, grid, camera, expected frame count, phase timings,
+codec information, and independent cadence verification. Use `--field all` for
+all eight views, or run the shorter four-view acceptance gate before a long
+Beauty render:
+
+```powershell
+.\scripts\record-fire.cmd --test-views --background
+```
+
+### Recorder architecture and verification
 
 Long renders use a separate capture path from the short in-browser exporter. The
 capture page initializes Fire-X directly with the requested scene, diagnostic
@@ -61,12 +117,6 @@ That gate performs four independent Inferno resets for `beauty`, `temperature`,
 up to two minutes and audits every presentation timestamp and duration. Longer
 jobs still receive an exact packet/frame-count and duration audit, plus decoded
 start/middle/end windows; use `--verify full` to decode an entire long movie.
-
-A 30-second 4K rehearsal uses the UHD solver's normal dense grid:
-
-```powershell
-.\scripts\record-fire.cmd --duration 30s --resolution 4k --solver-tier uhd --grid auto --field beauty --background --output renders/firex-4k60-test.mp4
-```
 
 Always inspect the one-hour plan before starting the heavy job:
 
