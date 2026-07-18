@@ -1,0 +1,25 @@
+{
+  "name": "fire-relica",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -b && vite build",
+    "build:site-client": "tsc -b && vite build --outDir site/.client-dist",
+    "preview": "vite preview --host 127.0.0.1",
+    "record": "node scripts/record-fire.mjs",
+    "record:test-views": "node scripts/record-fire.mjs --test-views --background",
+    "record:4k-hour": "node scripts/record-fire.mjs --quality highest --hour --field beauty --background",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3",
+    "vite": "8.1.4",
+    "vitest": "4.1.10"
+  },
+  "dependencies": {
+    "mediabunny": "^1.50.8"
+  }
+}

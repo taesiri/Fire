@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Fire Replica Lab">
+  <rect width="64" height="64" rx="14" fill="#080b0d"/>
+  <path d="M34 7c2 10-7 14-2 23 2 3 5 4 7 1 3-4 0-8 3-12 8 8 11 16 8 25-3 9-10 14-19 14S14 52 13 43c-1-10 6-17 13-24-1 7 1 11 4 11 5 0-1-13 4-23Z" fill="#ff6b1a"/>
+  <path d="M31 34c1 5-4 7-2 12 1 3 5 3 7 0 1-2 1-5 2-7 5 7 1 14-6 14-6 0-10-4-9-9 0-5 4-8 8-12v2Z" fill="#ffd36a"/>
+</svg>

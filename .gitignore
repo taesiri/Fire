@@ -1,0 +1,24 @@
+node_modules/
+dist/
+coverage/
+.vite/
+tmp/
+renders/
+*.partial.mp4
+*.log
+*.tsbuildinfo
+
+# Local secrets and deployment credentials
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+.wrangler/
+*.pem
+*.key
+*.p12
+*.pfx
+*.kdbx
+credentials.json
+secrets.json

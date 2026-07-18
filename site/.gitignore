@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.next/
+.vinext/
+.wrangler/
+.client-dist/
+public/assets/
+public/lab.html
+public/capture.html
+public/og.png
+public/favicon.svg
+*.tsbuildinfo

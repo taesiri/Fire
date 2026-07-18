@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <title>Fire Replica CLI Capture</title>
+  </head>
+  <body>
+    <main class="capture-shell">
+      <canvas id="capture-canvas" aria-label="Fire-X offline capture canvas"></canvas>
+      <section class="capture-status" aria-live="polite">
+        <span class="capture-kicker">Deterministic CLI capture</span>
+        <h1 id="capture-title">Waiting for a local recording job</h1>
+        <p id="capture-detail">This page only accepts a token-scoped job from the local recorder.</p>
+        <progress id="capture-progress" max="1" value="0"></progress>
+        <div class="capture-metrics">
+          <span id="capture-frames">0 frames</span>
+          <span id="capture-bytes">0 bytes streamed</span>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="/src/cli/captureApp.ts"></script>
+  </body>
+</html>
